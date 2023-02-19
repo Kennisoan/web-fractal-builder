@@ -25,3 +25,4 @@ yarn-error.log*
 
 # cargo
 wasm-lib/target
+wasm-lib/pkg
