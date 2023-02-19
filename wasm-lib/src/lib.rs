@@ -14,6 +14,7 @@ macro_rules! console_log {
     ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
 }
 
+
 #[derive(Serialize, Deserialize, Debug)]
 struct Dictionary {
     id: usize,
@@ -44,9 +45,4 @@ pub fn process_dictionaries(input: JsValue) -> JsValue {
 // #[wasm_bindgen]
 // pub fn build_fractal(dots: JsValue) -> JsValue {
 //     process_dictionaries(dots)
-// }
-
-// #[wasm_bindgen]
-// pub fn add(left: usize, right: usize) -> usize {
-//     left + right
 // }
