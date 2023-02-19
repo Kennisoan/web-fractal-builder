@@ -6,11 +6,11 @@ function App() {
 
 	init().then(() => {
 
-		const dictionary = [
+		const dictionaries = [
 			{"id": 1, "x": 4.0, "y": 2.0},
 			{"id": 2, "x": 4.0, "y": 3.0}
 		];
-		const result = process_dictionaries(dictionary);
+		const result = process_dictionaries(dictionaries);
 		console.log(result);
 
 	});
