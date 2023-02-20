@@ -6,14 +6,16 @@ import init, { fractal } from "wasm-lib";
 function App() {
 	const [inputPoints, setInputPoints] = useState([
 		{ id: 0, x: 0, y: 0 },
-		{ id: 1, x: 1, y: 2 },
-		{ id: 2, x: 3, y: 4 },
+		{ id: 1, x: 1, y: 0 },
+		{ id: 2, x: 2, y: 1 },
+		{ id: 1, x: 3, y: 0 },
+		{ id: 1, x: 4, y: 0 },
 	]);
 	const [points, setPoints] = useState([]);
 
 	useEffect(() => {
 		init().then(() => {
-			let nextPoints = fractal(inputPoints);
+			let nextPoints = fractal(inputPoints, 4);
 			setPoints(nextPoints);
 			console.log(nextPoints);
 		});
