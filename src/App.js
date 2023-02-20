@@ -8,8 +8,8 @@ function App() {
 		{ id: 0, x: 0, y: 0 },
 		{ id: 1, x: 1, y: 0 },
 		{ id: 2, x: 2, y: 1 },
-		{ id: 1, x: 3, y: 0 },
-		{ id: 1, x: 4, y: 0 },
+		{ id: 3, x: 3, y: 0 },
+		{ id: 4, x: 4, y: 0 },
 	]);
 	const [points, setPoints] = useState([]);
 

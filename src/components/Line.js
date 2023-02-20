@@ -2,8 +2,12 @@ import React from "react";
 
 function Line({ data, svgWidth, svgHeight }) {
 	// Break if array is empty
-	if (data.length == 0) {
-		return <svg></svg>;
+	if (data == null || data.length == 0) {
+		return (
+			<div className="line-container">
+				<svg width={svgWidth} height={svgHeight}></svg>
+			</div>
+		);
 	}
 
 	// Find the minimum and maximum x and y values in the data list
