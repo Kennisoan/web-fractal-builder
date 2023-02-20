@@ -2,3 +2,55 @@ h1 {
 	text-align: center;
 	font-family: monospace;
 }
+
+.line-container {
+	position: relative;
+	background: #eee;
+	width: fit-content;
+	height: fit-content;
+	margin: 0 auto 2rem;
+	padding: 3rem;
+	border-radius: 0.5rem;
+}
+
+.line-container svg {
+	overflow: visible;
+}
+
+.line-container span {
+	font-family: monospace;
+	position: absolute;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 4rem;
+	opacity: 0.25;
+}
+
+.line-container .minX {
+	top: 50%;
+	transform: translateY(-50%);
+	left: 1rem;
+}
+.line-container .maxX {
+	top: 50%;
+	transform: translateY(-50%);
+	right: 1rem;
+}
+
+.line-container .minY {
+	left: 50%;
+	transform: translateX(-50%);
+	top: 1rem;
+}
+.line-container .maxY {
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 1rem;
+}
+
+.point-input-container {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 0.5rem;
+}
