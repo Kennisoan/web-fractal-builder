@@ -55,37 +55,35 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     let mut sinuses = vec![0.];
     let mut cosinus = vec![1.];
 
-    let (_, xf, yf) = init_dots[0             ].into();
-    let (_, xl, yl) = init_dots[dots_count - 1].into();
+    let (_, xf, yf) = init_dots[0             ].into(); // first point coords
+    let (_, xl, yl) = init_dots[dots_count - 1].into(); // last point coords
 
-    let (x, y) = (xl - xf, yl - yf);
+    let (x, y) = (xl - xf, yl - yf); // vector from first point to last
 
     let mut vec_length = vec![(x.powi(2) + y.powi(2)).sqrt()];
     let mut vec_current_length = vec![1.];
 
-    for vec in &init_dots {
-        let (_, xn, yn) = (*vec).into();
+    for i in 1..dots_count {
+        let (_, xn, yn) = init_dots[i].into();
 
-        vec_length.push(xn.powi(2) + yn.powi(2));
-        vec_current_length.push(vec_length.last().unwrap()/vec_length[0]);
-        
-        cosinus.push((xn * x + yn * y)/(vec_length.last().unwrap() * vec_length[0]));
-        sinuses.push((1. - cosinus.last().unwrap().powi(2)).sqrt());
+        vec_length.push((xn.powi(2) + yn.powi(2)).sqrt());
+        vec_current_length.push(vec_length[i] / vec_length[0]);
+
+        cosinus.push((xn * x + yn * y)/(vec_length[i] * vec_length[0]));
+        sinuses.push((1. - cosinus[i].powi(2)).sqrt());
     }
 
-    console_log!("Hello?");
     let frac = build_fractal(
         dots_count,
         (0., 0.), // first dot coords
-        (1000., 1000.), // last dot coords
+        (1000., 0.), // last dot coords
         &sinuses,
         &cosinus,
         &vec_current_length,
         0,
-        iterations
+        iterations - 1
     );
     let mut frac_dict = vec![];
-    console_log!("No fractals?");
 
     for i in 0..frac.len() {
         frac_dict.push(Dictionary::new(i, frac[i].0, frac[i].1))
@@ -108,18 +106,19 @@ pub fn build_fractal(
 
     let mut coords = vec![vecn];
 
+    let (x, y) = (vece.0 - vecn.0, vece.1 - vecn.1);
+
     for i in 1..dots_count - 1 {
-        let (x, y) = (vece.0 - vecn.0, vece.1 - vecn.1);
+        // calculate current vector (from vecn)
+        let xc = (x * cosinus[i] + y * sinuses[i]) * vec_current_length[i];
+        let yc = (-x * sinuses[i] + y * cosinus[i]) * vec_current_length[i];
 
-        let xr = (x * cosinus[i] + y * sinuses[i]) * vec_current_length[i];
-        let yr = (-x * sinuses[i] + y * cosinus[i]) * vec_current_length[i];
-
-        coords.push((vecn.0 + xr, vecn.1 + yr));
+        coords.push((vecn.0 + xc, vecn.1 + yc));
     }
     coords.push(vece);
 
     if iteration == max_iters {
-        fractal.extend(&coords);
+        fractal.append(&mut coords);
     } else {
         for i in 1..dots_count {
             fractal.append(&mut build_fractal(
