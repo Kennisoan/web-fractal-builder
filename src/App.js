@@ -13,7 +13,7 @@ function App() {
 			{"id": 4, "x": 3.0, "y": 0.0},
 			{"id": 5, "x": 4.0, "y": 0.0}
 		];
-		const result = fractal(dictionaries, 1);
+		const result = fractal(dictionaries, 2);
 		console.log(result);
 
 	});
