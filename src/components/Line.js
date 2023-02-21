@@ -44,7 +44,7 @@ function Line({ data, svgWidth, svgHeight }) {
 					stroke="#FF0040"
 					strokeLinecap="round"
 					strokeLinejoin="round"
-					fill="none"
+					fill="transparent"
 				/>
 			</svg>
 			<span className="minX">{minX}</span>
