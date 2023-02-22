@@ -12,12 +12,14 @@ function App() {
 		{ id: 3, x: 3, y: 0 },
 		{ id: 4, x: 4, y: 0 },
 	]);
+	const [points, setPoints] = useState([{ id: 0, x: 0, y: 0 }]);
+	const [prevPoints, setPrevPoints] = useState([{ id: 0, x: 0, y: 0 }]);
 	const [iterations, setIterations] = useState(3);
-	const [points, setPoints] = useState([]);
 
 	useEffect(() => {
 		init().then(() => {
 			let nextPoints = fractal(inputPoints, iterations);
+			setPrevPoints(points);
 			setPoints(nextPoints);
 			console.log(nextPoints);
 		});
@@ -26,7 +28,12 @@ function App() {
 	return (
 		<div className="App">
 			<h1>Hello fractal world!</h1>
-			<Line data={points} svgWidth={500} svgHeight={500} />
+			<Line
+				points={points}
+				prevPoints={prevPoints}
+				svgWidth={500}
+				svgHeight={500}
+			/>
 
 			<div className="controls">
 				<IterInput iterations={iterations} setIterations={setIterations} />
