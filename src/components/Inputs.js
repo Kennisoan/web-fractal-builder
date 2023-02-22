@@ -3,7 +3,7 @@ import React from "react";
 export function IterInput({ iterations, setIterations }) {
 	return (
 		<div className="iter-input-container">
-			<label htmlFor="iterations-slider">Iterations:</label>
+			<label htmlFor="iterations-slider">Iterations ({iterations}):</label>
 			<input
 				type="range"
 				id="iterations-slider"
@@ -30,7 +30,7 @@ export function PointInput({ point, inputPoints, setInputPoints }) {
 					const nextInputPoints = [...inputPoints];
 					nextInputPoints[point.id] = {
 						...inputPoints[point.id],
-						x: parseFloat(event.target.value),
+						x: Math.max(0, parseFloat(event.target.value)),
 					};
 					setInputPoints(nextInputPoints);
 				}}
@@ -43,7 +43,7 @@ export function PointInput({ point, inputPoints, setInputPoints }) {
 					const nextInputPoints = [...inputPoints];
 					nextInputPoints[point.id] = {
 						...inputPoints[point.id],
-						y: parseFloat(event.target.value),
+						y: Math.max(0, parseFloat(event.target.value)),
 					};
 					setInputPoints(nextInputPoints);
 				}}
