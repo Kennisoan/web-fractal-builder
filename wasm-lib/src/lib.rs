@@ -34,12 +34,24 @@ impl From<Dictionary> for (usize, f64, f64) {
     }
 }
 
+
+fn calc_cos(v1: (f64, f64), v2: (f64, f64), l1: f64, l2: f64) -> f64 {
+    (v1.0 * v2.0 + v1.1 * v2.1)/(l1 * l2)
+}
+
+fn calc_sin(y: f64, cos: f64) -> f64 {
+    let sin = (1. - cos.powi(2)).sqrt();
+    if y < 0.{ return -sin; }
+    sin
+}
+
+
 // input - js array of js dicts: [{"id": 0, "x": 1., "y": 4.}, ...]
 // iterations - depth of generated fractal
 #[wasm_bindgen]
 pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     let init_dots: Vec<Dictionary> = match input.into_serde() {
-        Ok(omg) => omg,
+        Ok(value) => value,
         Err(err) => {
             console_log!("Can not parse input: {}", err);
             return JsValue::NULL;
@@ -52,16 +64,19 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
         return JsValue::NULL;
     }
 
-    let mut sinuses = vec![0.];
-    let mut cosinus = vec![1.];
-
     let (_, xf, yf) = init_dots[0             ].into();
     let (_, xl, yl) = init_dots[dots_count - 1].into();
-
+    
     let (x, y) = (xl - xf, yl - yf); // vector from first point -> last
-
+        
     let mut vec_length = vec![(x.powi(2) + y.powi(2)).sqrt()];
     let mut length_ratio_to_first = vec![1.];
+
+    console_log!("y: {}", y);
+    let mut cosinus = vec![calc_cos((x, y), (1., 0.), vec_length[0], 1.)];
+    let mut sinuses = vec![calc_sin(y, cosinus[0])];
+    console_log!("main cos: {}", cosinus[0]);
+    console_log!("main sin: {}", sinuses[0]);
 
     for i in 1..dots_count {
         let (_, mut xn, mut yn) = init_dots[i].into();
@@ -70,12 +85,11 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
         vec_length.push((xn.powi(2) + yn.powi(2)).sqrt());
         length_ratio_to_first.push(vec_length[i] / vec_length[0]);
 
-        cosinus.push((xn * x + yn * y)/(vec_length[i] * vec_length[0])); // (a, b) = x1x2 + y1y2 = |a||b|cos(phi)
-        sinuses.push((1. - cosinus[i].powi(2)).sqrt());
-        console_log!("sin: {}, cos: {}", sinuses.last().unwrap(), cosinus.last().unwrap());
+        cosinus.push(calc_cos((xn, yn), (x, y), vec_length[i], vec_length[0])); // (a, b) = x1x2 + y1y2 = |a||b|cos(phi)
+        sinuses.push(calc_sin(yn - y, cosinus[i]));
     }
 
-    let frac = build_fractal(
+    let fractal = build_fractal(
         (xf, yf), // first dot coords
         (xl, yl), // last dot coords
         &sinuses,
@@ -86,8 +100,8 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     );
     let mut frac_dict = vec![];
 
-    for i in 0..frac.len() {
-        frac_dict.push(Dictionary::new(i, frac[i].0, frac[i].1))
+    for i in 0..fractal.len() {
+        frac_dict.push(Dictionary::new(i, fractal[i].0, fractal[i].1))
     }
 
     JsValue::from_serde(&frac_dict).unwrap()
@@ -105,7 +119,7 @@ pub fn build_fractal(
     let dots_count = length_ratio_to_first.len();
 
     let mut fractal: Vec<(f64, f64)> = vec![];
-    let mut coords = vec![vecf];
+    let mut coords: Vec<(f64, f64)> = vec![vecf];
 
     let (x, y) = (vecl.0 - vecf.0, vecl.1 - vecf.1);
 
