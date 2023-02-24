@@ -47,17 +47,31 @@ function App() {
 						/>
 					);
 				})}
-				<button
-					onClick={() => {
-						const nextInputPoints = [
-							...inputPoints,
-							{ id: inputPoints.length, x: 0, y: 0 },
-						];
-						setInputPoints(nextInputPoints);
-					}}
-				>
-					Add point
-				</button>
+
+				<div class="control-buttons">
+					<button
+						onClick={() => {
+							const nextInputPoints = [
+								...inputPoints,
+								{ id: inputPoints.length, x: 0, y: 0 },
+							];
+							setInputPoints(nextInputPoints);
+						}}
+					>
+						Add point
+					</button>{" "}
+					<button
+						onClick={() => {
+							const nextInputPoints = [...inputPoints];
+							nextInputPoints.splice(-1, 1);
+							console.log(nextInputPoints);
+							setInputPoints(nextInputPoints);
+						}}
+						disabled={inputPoints.length <= 3}
+					>
+						Remove point
+					</button>
+				</div>
 			</div>
 		</div>
 	);
