@@ -27,10 +27,11 @@ export function PointInput({ point, inputPoints, setInputPoints }) {
 				type="number"
 				value={point.x}
 				onChange={(event) => {
+					const value = event.target.value == "" ? 0 : event.target.value;
 					const nextInputPoints = [...inputPoints];
 					nextInputPoints[point.id] = {
 						...inputPoints[point.id],
-						x: Math.max(0, parseFloat(event.target.value)),
+						x: Math.max(0, parseFloat(value)),
 					};
 					setInputPoints(nextInputPoints);
 				}}
@@ -40,10 +41,11 @@ export function PointInput({ point, inputPoints, setInputPoints }) {
 				type="number"
 				value={point.y}
 				onChange={(event) => {
+					const value = event.target.value == "" ? 0 : event.target.value;
 					const nextInputPoints = [...inputPoints];
 					nextInputPoints[point.id] = {
 						...inputPoints[point.id],
-						y: Math.max(0, parseFloat(event.target.value)),
+						y: Math.max(0, parseFloat(value)),
 					};
 					setInputPoints(nextInputPoints);
 				}}
