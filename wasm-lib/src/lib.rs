@@ -45,6 +45,10 @@ fn calc_sin(y: f64, cos: f64) -> f64 {
     -sin
 }
 
+fn calc_vector_length(vec: (f64, f64)) -> f64 {
+    (vec.0.powi(2) + vec.1.powi(2)).sqrt()
+}
+
 
 // input - js array of js dicts: [{"id": 0, "x": 1., "y": 4.}, ...]
 // iterations - depth of generated fractal
@@ -73,7 +77,7 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     
     let (x, y) = (xl - xf, yl - yf); // vector from first point -> last
 
-    let mut vec_length = vec![(x.powi(2) + y.powi(2)).sqrt()];
+    let mut vec_length = vec![calc_vector_length((x, y))];
     let mut length_ratio_to_first = vec![1.];
 
     // console_log!("y: {}", y);
@@ -86,7 +90,7 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
         let (_, mut xn, mut yn) = init_dots[i].into();
         (xn, yn) = (xn - xf, yn - yf);
 
-        vec_length.push((xn.powi(2) + yn.powi(2)).sqrt());
+        vec_length.push(calc_vector_length((xn, yn)));
         length_ratio_to_first.push(vec_length[i] / vec_length[0]);
 
         cosinus.push(calc_cos((xn, yn), (x, y), vec_length[i], vec_length[0])); // (a, b) = x1x2 + y1y2 = |a||b|cos(phi)
