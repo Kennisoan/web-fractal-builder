@@ -4,11 +4,17 @@ import { interpolate } from "flubber";
 
 function Line({ points, prevPoints, svgWidth, svgHeight }) {
 	function getPath(points) {
-		// Find the minimum and maximum x and y values in the data list
-		const minX = Math.min(...points.map((point) => point.x));
-		const maxX = Math.max(...points.map((point) => point.x));
-		const minY = Math.min(...points.map((point) => point.y));
-		const maxY = Math.max(...points.map((point) => point.y));
+		let minX = Number.MAX_SAFE_INTEGER;
+		let maxX = Number.MIN_SAFE_INTEGER;
+		let minY = Number.MAX_SAFE_INTEGER;
+		let maxY = Number.MIN_SAFE_INTEGER;
+
+		for (let point of points) {
+			minX = Math.min(minX, point.x);
+			maxX = Math.max(maxX, point.x);
+			minY = Math.min(minY, point.y);
+			maxY = Math.max(maxY, point.y);
+		}
 
 		// Calculate the scaling factor to fit the data inside the SVG
 		const xRange = maxX - minX;
