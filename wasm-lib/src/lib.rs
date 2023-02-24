@@ -68,15 +68,15 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     let (_, xl, yl) = init_dots[dots_count - 1].into();
     
     let (x, y) = (xl - xf, yl - yf); // vector from first point -> last
-        
+
     let mut vec_length = vec![(x.powi(2) + y.powi(2)).sqrt()];
     let mut length_ratio_to_first = vec![1.];
 
-    console_log!("y: {}", y);
+    // console_log!("y: {}", y);
     let mut cosinus = vec![calc_cos((x, y), (1., 0.), vec_length[0], 1.)];
     let mut sinuses = vec![calc_sin(y, cosinus[0])];
-    console_log!("main cos: {}", cosinus[0]);
-    console_log!("main sin: {}", sinuses[0]);
+    // console_log!("main cos: {}", cosinus[0]);
+    // console_log!("main sin: {}", sinuses[0]);
 
     for i in 1..dots_count {
         let (_, mut xn, mut yn) = init_dots[i].into();
@@ -90,8 +90,8 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     }
 
     let fractal = build_fractal(
-        (xf, yf), // first dot coords
-        (xl, yl), // last dot coords
+        (0., 0.), // first dot coords
+        (x, y), // last dot coords
         &sinuses,
         &cosinus,
         &length_ratio_to_first,
@@ -127,7 +127,7 @@ pub fn build_fractal(
         // calculate current vector (from vecf)
         let xc = (x * cosinus[i] + y * sinuses[i]) * length_ratio_to_first[i];
         let yc = (-x * sinuses[i] + y * cosinus[i]) * length_ratio_to_first[i];
-        console_log!("xc: {}, yc: {}, cos: {}, sin: {}", xc, yc, cosinus[i], sinuses[i]);
+        // console_log!("xc: {}, yc: {}, cos: {}, sin: {}", xc, yc, cosinus[i], sinuses[i]);
 
         coords.push((vecf.0 + xc, vecf.1 + yc));
     }
