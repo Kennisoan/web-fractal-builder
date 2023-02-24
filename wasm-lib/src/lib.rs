@@ -41,8 +41,8 @@ fn calc_cos(v1: (f64, f64), v2: (f64, f64), l1: f64, l2: f64) -> f64 {
 
 fn calc_sin(y: f64, cos: f64) -> f64 {
     let sin = (1. - cos.powi(2)).sqrt();
-    if y < 0.{ return -sin; }
-    sin
+    if y < 0. { return sin; }
+    -sin
 }
 
 
@@ -50,6 +50,10 @@ fn calc_sin(y: f64, cos: f64) -> f64 {
 // iterations - depth of generated fractal
 #[wasm_bindgen]
 pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
+    if iterations == 1 {
+        return input;
+    }
+
     let init_dots: Vec<Dictionary> = match input.into_serde() {
         Ok(value) => value,
         Err(err) => {

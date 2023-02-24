@@ -3,15 +3,6 @@ import { motion } from "framer-motion";
 import { interpolate } from "flubber";
 
 function Line({ points, prevPoints, svgWidth, svgHeight }) {
-	// // Break if array is empty
-	// if (points == null || points.length == 0) {
-	// 	return (
-	// 		<div className="line-container">
-	// 			<svg width={svgWidth} height={svgHeight}></svg>
-	// 		</div>
-	// 	);
-	// }
-
 	function getPath(points) {
 		// Find the minimum and maximum x and y values in the data list
 		const minX = Math.min(...points.map((point) => point.x));
@@ -41,7 +32,7 @@ function Line({ points, prevPoints, svgWidth, svgHeight }) {
 				points[i].y * scale + offsetY
 			}`;
 		}
-		path += " z";
+		// path += " z";
 		return path;
 	}
 
@@ -76,6 +67,7 @@ function Line({ points, prevPoints, svgWidth, svgHeight }) {
 					stroke="gray"
 					strokeLinecap="round"
 					strokeLinejoin="round"
+					pathLength="0.5"
 					fill="transparent"
 				/>
 			</svg>
