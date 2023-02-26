@@ -40,7 +40,7 @@ fn calc_cos(v1: (f64, f64), v2: (f64, f64), l1: f64, l2: f64) -> f64 {
 }
 
 fn calc_sin(y: f64, cos: f64) -> f64 {
-    let sin = (1. - cos.powi(2)).sqrt(); //       { sqrt(1 - cos^2(x)), y >= 0
+    let sin = (1. - cos.powi(2)).sqrt();      //       { sqrt(1 - cos^2(x)), y >= 0
     if y < 0. { return -sin; }                // sin = {
     sin                                       //       { -sqrt(1 - cos^2(x)), y < 0
 }
@@ -54,9 +54,9 @@ fn calc_vector_length(vec: (f64, f64)) -> f64 {
 // iterations - depth of generated fractal
 #[wasm_bindgen]
 pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
-    if iterations == 1 {
-        return input;
-    }
+    // if iterations == 1 {
+    //     return input;
+    // }
 
     let init_dots: Vec<Dictionary> = match input.into_serde() {
         Ok(value) => value,
@@ -76,36 +76,36 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
     let (_, xl, yl) = init_dots[dots_count - 1].into();
 
     let (x, y) = (xl - xf, yl - yf); // vector from first point -> last
-    
-    let mut vec_length = vec![calc_vector_length((x, y))];
-    let mut length_ratio_to_first = vec![1.];
+    let vecm = (x, y); // main vector
+
+    let mut vec_length = vec![calc_vector_length(vecm)];
+    let mut length_ratio_to_main = vec![1.];
 
     let norm_main_vec_y = y/vec_length[0];
-    
-    let mut cosinus = vec![1.];
-    let mut sinuses = vec![0.];
+
+    let mut coses = vec![1.];
+    let mut sines = vec![0.];
 
     for i in 1..dots_count - 1 {
-        console_log!("iteration {i}:");
-        let (_, mut xn, mut yn) = init_dots[i].into();
-        (xn, yn) = (xn - xf, yn - yf);
+        let (_, xn, yn) = init_dots[i].into();
+        let vecn = (xn - xf, yn - yf);
 
-        vec_length.push(calc_vector_length((xn, yn)));
-        length_ratio_to_first.push(vec_length[i] / vec_length[0]);
+        vec_length.push(calc_vector_length(vecn));
+        length_ratio_to_main.push(vec_length[i] / vec_length[0]);
 
-        let norm_i_vec_y = yn / vec_length[i];
+        let norm_i_vec_y = vecn.1 / vec_length[i];
 
-        cosinus.push(calc_cos((xn, yn), (x, y), vec_length[i], vec_length[0]));
-        sinuses.push(calc_sin(norm_i_vec_y - norm_main_vec_y, cosinus[i]));
+        coses.push(calc_cos(vecn, vecm, vec_length[i], vec_length[0]));
+        sines.push(calc_sin(norm_i_vec_y - norm_main_vec_y, coses[i]));
     }
 
     let fractal = build_fractal(
         dots_count,
         (0., 0.), // first dot coords
-        (x, y), // last dot coords
-        &sinuses,
-        &cosinus,
-        &length_ratio_to_first,
+        vecm, // last dot coords
+        &sines,
+        &coses,
+        &length_ratio_to_main,
         iterations - 1
     );
     let mut frac_dict = vec![];
@@ -121,9 +121,9 @@ pub fn build_fractal(
     dots_count: usize,
     vecf: (f64, f64),
     vecl: (f64, f64),
-    sinuses: &Vec<f64>,
-    cosinus: &Vec<f64>,
-    length_ratio_to_first: &Vec<f64>,
+    sines: &Vec<f64>,
+    coses: &Vec<f64>,
+    length_ratio_to_main: &Vec<f64>,
     iteration: usize
 ) -> Vec<(f64, f64)> {
     let mut fractal: Vec<(f64, f64)> = vec![];
@@ -133,8 +133,8 @@ pub fn build_fractal(
     let mut coords: Vec<(f64, f64)> = vec![vecf];
     for i in 1..dots_count - 1 {
         // calculate current vector (relative to vecf)
-        let xc = (x * cosinus[i] - y * sinuses[i]) * length_ratio_to_first[i];
-        let yc = (x * sinuses[i] + y * cosinus[i]) * length_ratio_to_first[i];
+        let xc = (x * coses[i] - y * sines[i]) * length_ratio_to_main[i];
+        let yc = (x * sines[i] + y * coses[i]) * length_ratio_to_main[i];
 
         coords.push((vecf.0 + xc, vecf.1 + yc));
     }
@@ -148,9 +148,9 @@ pub fn build_fractal(
                 dots_count,
                 coords[i - 1],
                 coords[i],
-                sinuses,
-                cosinus,
-                length_ratio_to_first,
+                sines,
+                coses,
+                length_ratio_to_main,
                 iteration - 1,
             ));
         }
