@@ -106,7 +106,6 @@ pub fn fractal(input: JsValue, iterations: usize) -> JsValue {
         &sinuses,
         &cosinus,
         &length_ratio_to_first,
-        0,
         iterations - 1
     );
     let mut frac_dict = vec![];
@@ -125,8 +124,7 @@ pub fn build_fractal(
     sinuses: &Vec<f64>,
     cosinus: &Vec<f64>,
     length_ratio_to_first: &Vec<f64>,
-    iteration: usize,
-    max_iters: usize
+    iteration: usize
 ) -> Vec<(f64, f64)> {
     let mut fractal: Vec<(f64, f64)> = vec![];
 
@@ -142,7 +140,7 @@ pub fn build_fractal(
     }
     coords.push(vecl);
 
-    if iteration == max_iters {
+    if iteration == 0 {
         fractal.append(&mut coords);
     } else {
         for i in 1..dots_count {
@@ -153,8 +151,7 @@ pub fn build_fractal(
                 sinuses,
                 cosinus,
                 length_ratio_to_first,
-                iteration + 1,
-                max_iters
+                iteration - 1,
             ));
         }
     }
