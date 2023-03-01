@@ -12,7 +12,7 @@ h1 {
 }
 
 .line-color {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100vw;
@@ -20,14 +20,7 @@ h1 {
 	background-image: linear-gradient(
 		45deg,
 		hsl(193deg 100% 49%) 0%,
-		hsl(190deg 100% 48%) 11%,
-		hsl(185deg 100% 45%) 22%,
-		hsl(177deg 100% 43%) 33%,
-		hsl(168deg 100% 44%) 44%,
-		hsl(155deg 78% 53%) 56%,
-		hsl(120deg 69% 67%) 67%,
-		hsl(86deg 73% 60%) 78%,
-		hsl(64deg 73% 51%) 89%,
+		hsl(164deg 100% 44%) 50%,
 		hsl(50deg 100% 50%) 100%
 	);
 	mix-blend-mode: multiply;
@@ -45,6 +38,7 @@ h1 {
 
 .line-container svg {
 	overflow: visible;
+	filter: drop-shadow(0 0 0.5rem #777);
 	transform: scale(1, -1);
 }
 
