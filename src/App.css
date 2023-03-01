@@ -1,3 +1,8 @@
+html {
+	background: black;
+	color: white;
+}
+
 * {
 	font-family: monospace;
 }
@@ -6,14 +11,36 @@ h1 {
 	text-align: center;
 }
 
+.line-color {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-image: linear-gradient(
+		45deg,
+		hsl(193deg 100% 49%) 0%,
+		hsl(190deg 100% 48%) 11%,
+		hsl(185deg 100% 45%) 22%,
+		hsl(177deg 100% 43%) 33%,
+		hsl(168deg 100% 44%) 44%,
+		hsl(155deg 78% 53%) 56%,
+		hsl(120deg 69% 67%) 67%,
+		hsl(86deg 73% 60%) 78%,
+		hsl(64deg 73% 51%) 89%,
+		hsl(50deg 100% 50%) 100%
+	);
+	mix-blend-mode: multiply;
+	pointer-events: none;
+	z-index: 1;
+}
+
 .line-container {
-	position: relative;
-	background: #eee;
-	width: fit-content;
-	height: fit-content;
-	margin: 0 auto 2rem;
-	padding: 3rem;
-	border-radius: 0.5rem;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
 }
 
 .line-container svg {
@@ -54,9 +81,11 @@ h1 {
 }
 
 .controls {
+	position: fixed;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	z-index: 2;
 }
 
 .iter-input-container {

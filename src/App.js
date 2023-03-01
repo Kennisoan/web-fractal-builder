@@ -1,8 +1,9 @@
 import "./App.css";
 import { useState, useEffect } from "react";
+import init, { fractal } from "wasm-lib";
+
 import Line from "./components/Line";
 import { IterInput, PointInput } from "./components/Inputs";
-import init, { fractal } from "wasm-lib";
 
 function App() {
 	const [inputPoints, setInputPoints] = useState([
@@ -27,7 +28,6 @@ function App() {
 
 	return (
 		<div className="App">
-			<h1>Hello fractal world!</h1>
 			<Line
 				points={points}
 				prevPoints={prevPoints}
