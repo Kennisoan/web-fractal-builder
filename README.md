@@ -2,7 +2,7 @@
 
 ReactJS + Rust web project
 
-[Original project](https://github.com/vitosotdihaet/fractal-builder) built on Pygame using Tkinter
+[Original project](https://github.com/vitosotdihaet/fractal-builder) built on Python using Tkinter
 
 # Requirements
 `npm`, `react-scripts`
